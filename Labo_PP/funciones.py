@@ -2,6 +2,11 @@ from datetime import datetime
 from validaciones import obtener_opcion, validar_nombre, validar_descripcion, validar_presupuesto, validar_fecha
 
 def ingresar_proyecto(proyectos):
+    """
+    Permite al usuario ingresar un nuevo proyecto en la lista de proyectos.
+
+    :param proyectos: Lista de proyectos.
+    """
     if len(proyectos) >= 50:
         print("No se pueden agregar más proyectos. Límite alcanzado.")
         return
@@ -45,6 +50,11 @@ def ingresar_proyecto(proyectos):
     print(f"Proyecto '{nombre}' ingresado con éxito.")
 
 def modificar_proyecto(proyectos):
+    """
+    Permite modificar los datos de un proyecto existente en la lista de proyectos.
+
+    :param proyectos: Lista de proyectos.
+    """
     mostrar_todos(proyectos)
     id_proyecto = input("Ingrese el ID del proyecto a modificar: ")
     while not id_proyecto.isdigit():
@@ -58,14 +68,23 @@ def modificar_proyecto(proyectos):
 
     while True:
         print("""
-        1. Nombre del Proyecto
-        2. Descripción
-        3. Presupuesto
-        4. Fecha de Inicio
-        5. Fecha de Fin
-        6. Estado
-        7. Salir
-        """)
+    +------------------------------+
+    |        MENÚ PRINCIPAL        |
+    +------------------------------+
+    |  1. Ingresar proyecto        |
+    |  2. Modificar proyecto       |
+    |  3. Cancelar proyecto        |
+    |  4. Comprobar proyectos      |
+    |  5. Mostrar todos            |
+    |  6. Calcular presupuesto     |
+    |     promedio                 |
+    |  7. Buscar proyecto por      |
+    |     nombre                   |
+    |  8. Ordenar proyectos        |
+    |  9. Retomar proyecto         |
+    | 10. Salir                    |
+    +------------------------------+
+    """)
         opcion = obtener_opcion("Seleccione el campo a modificar: ", 1, 7)
         if opcion == 1:
             nombre = input("Nuevo Nombre del Proyecto: ")
@@ -108,6 +127,11 @@ def modificar_proyecto(proyectos):
         print("Proyecto modificado con éxito.")
 
 def cancelar_proyecto(proyectos):
+    """
+    Cambia el estado de un proyecto a 'Cancelado' basándose en su ID.
+
+    :param proyectos: Lista de proyectos.
+    """
     mostrar_discriminado(proyectos, 'Activo')
     id_proyecto = input("Ingrese el ID del proyecto a cancelar: ")
     while not id_proyecto.isdigit():
@@ -121,6 +145,11 @@ def cancelar_proyecto(proyectos):
         print(f"No se encontró ningún proyecto con ID {id_proyecto}.")
 
 def comprobar_proyectos(proyectos):
+    """
+    Verifica y actualiza el estado de los proyectos basándose en su fecha de fin y el estado actual.
+
+    :param proyectos: Lista de proyectos.
+    """
      # Obtener la fecha actual
     fecha_actual = datetime.now()
     
@@ -146,12 +175,22 @@ def comprobar_proyectos(proyectos):
     print("Comprobación de proyectos completada.")
 
 def mostrar_todos(proyectos):
+    """
+    Muestra todos los proyectos en formato de tabla.
+
+    :param proyectos: Lista de proyectos.
+    """
     print(f"| {'Nombre del Proyecto':38} | {'Descripción':80} | {'Fecha de Inicio':12} | {'Fecha de Fin':12} | {'Presupuesto':12} | {'Estado':10} |")
     print('-' * 150)
     for proyecto in proyectos:
         print(f"| {proyecto['Nombre del Proyecto']:38} | {proyecto['Descripción']:80} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Presupuesto']:12} | {proyecto['Estado']:10} |")
 
 def calcular_presupuesto_promedio(proyectos):
+    """
+    Calcula y muestra el presupuesto promedio de los proyectos.
+
+    :param proyectos: Lista de proyectos.
+    """
     presupuesto_total= 0
     if not proyectos:
         print("No hay proyectos disponibles.")
@@ -162,6 +201,11 @@ def calcular_presupuesto_promedio(proyectos):
     print(f"Presupuesto promedio de los proyectos: ${promedio:.2f}")
 
 def buscar_proyecto_por_nombre(proyectos):
+    """
+    Busca y muestra un proyecto basándose en su nombre.
+
+    :param proyectos: Lista de proyectos.
+    """
     nombre = input("Ingrese el nombre del proyecto a buscar: ")
     for proyecto in proyectos:
         if proyecto['Nombre del Proyecto'].lower() == nombre.lower():
@@ -170,10 +214,19 @@ def buscar_proyecto_por_nombre(proyectos):
     print(f"No se encontró ningún proyecto con el nombre '{nombre}'.")
 
 def ordenar_proyectos(proyectos):
+    """
+    Ordena los proyectos basándose en el criterio seleccionado y en el orden (ascendente o descendente).
+
+    :param proyectos: Lista de proyectos.
+    """
     print("""
-    1. Nombre
-    2. Presupuesto
-    3. Fecha de Inicio
+    +------------------------------+
+    |    CRITERIOS DE ORDENACIÓN   |
+    +------------------------------+
+    |  1. Nombre                   |
+    |  2. Presupuesto              |
+    |  3. Fecha de Inicio          |
+    +------------------------------+
     """)
     criterio_ordenamiento = obtener_opcion("Seleccione el criterio de ordenamiento: ", 1, 3)
     orden = obtener_opcion("Seleccione el orden (1. Ascendente, 2. Descendente): ", 1, 2)
@@ -192,6 +245,11 @@ def ordenar_proyectos(proyectos):
         mostrar_todos(proyectos) and print("Proyectos ordenados con éxito.")     
 
 def retomar_proyecto(proyectos):
+    """
+    Cambia el estado de un proyecto de 'Cancelado' a 'Activo' basándose en su ID.
+
+    :param proyectos: Lista de proyectos.
+    """
     mostrar_discriminado(proyectos, 'Cancelado')
     id_proyecto = input("Ingrese el ID del proyecto a retomar: ")
     while not id_proyecto.isdigit():
@@ -205,6 +263,12 @@ def retomar_proyecto(proyectos):
         print(f"No se encontró ningún proyecto cancelado con ID {id_proyecto}.")
         
 def mostrar_discriminado(proyectos, opcion):
+    """
+    Muestra los proyectos que tienen el estado especificado en 'opcion'.
+
+    :param proyectos: Lista de proyectos.
+    :param opcion: Estado de los proyectos a mostrar (e.g., 'Activo', 'Cancelado', 'Finalizado').
+    """
     print(f"| {'(ID) Nombre del Proyecto':38} | {'Descripción':80} | {'Fecha de Inicio':12} | {'Fecha de Fin':12} | {'Presupuesto':12} | {'Estado':10} |")
     print('-' * 150)
     for proyecto in proyectos:
@@ -212,6 +276,13 @@ def mostrar_discriminado(proyectos, opcion):
             print(f"|{proyecto['ID']} {proyecto['Nombre del Proyecto']:38} | {proyecto['Descripción']:80} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Presupuesto']:12} | {proyecto['Estado']:10} |")
 
 def ordenar_por(proyectos, ascendente, seccion):
+    """
+    Ordena los proyectos basándose en la sección especificada y el orden (ascendente o descendente).
+
+    :param proyectos: Lista de proyectos.
+    :param ascendente: Booleano que indica si el orden es ascendente (True) o descendente (False).
+    :param seccion: La clave del diccionario por la que se desea ordenar ('Nombre del Proyecto', 'Presupuesto').
+    """
     n = len(proyectos)
     for i in range(n):
         for j in range(0, n-i-1):
@@ -221,6 +292,12 @@ def ordenar_por(proyectos, ascendente, seccion):
                 proyectos[j], proyectos[j+1] = proyectos[j+1], proyectos[j]
 
 def ordenar_por_FechaInicio(proyectos,ascendente):
+    """
+    Ordena los proyectos basándose en la fecha de inicio y el orden (ascendente o descendente).
+
+    :param proyectos: Lista de proyectos.
+    :param ascendente: Booleano que indica si el orden es ascendente (True) o descendente (False).
+    """
     n = len(proyectos)
     for i in range(n):
         for j in range(0, n-i-1):

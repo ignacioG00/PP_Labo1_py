@@ -1,9 +1,11 @@
-import re
 from datetime import datetime
 
 def validar_nombre(nombre):
-    if re.fullmatch(r'[A-Za-z\s]{1,30}', nombre):
-        return True
+    # Verificar que la longitud del nombre esté dentro del rango permitido (1 a 30 caracteres)
+    if 1 <= len(nombre) <= 30:
+        # Verificar que todos los caracteres sean alfabéticos o espacios
+        if all(caracter.isalpha() or caracter.isspace() for caracter in nombre):
+            return True
     return False
 
 def validar_descripcion(descripcion):

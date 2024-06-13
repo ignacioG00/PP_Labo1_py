@@ -1,5 +1,3 @@
-import csv
-import json
 from datetime import datetime
 from validaciones import validar_nombre, validar_descripcion, validar_presupuesto, validar_fecha, obtener_opcion
 from manejo_archivos import cargar_proyectos, guardar_proyectos, guardar_proyectos_finalizados
@@ -20,16 +18,22 @@ PROYECTOS_FINALIZADOS_JSON = 'ProyectosFinalizados.json'
 
 def menu():
     print("""
-    1. Ingresar proyecto
-    2. Modificar proyecto
-    3. Cancelar proyecto
-    4. Comprobar proyectos
-    5. Mostrar todos
-    6. Calcular presupuesto promedio
-    7. Buscar proyecto por nombre
-    8. Ordenar proyectos
-    9. Retomar proyecto
-    10. Salir
+    +------------------------------+
+    |        MENÚ PRINCIPAL        |
+    +------------------------------+
+    |  1. Ingresar proyecto        |
+    |  2. Modificar proyecto       |
+    |  3. Cancelar proyecto        |
+    |  4. Comprobar proyectos      |
+    |  5. Mostrar todos            |
+    |  6. Calcular presupuesto     |
+    |     promedio                 |
+    |  7. Buscar proyecto por      |
+    |     nombre                   |
+    |  8. Ordenar proyectos        |
+    |  9. Retomar proyecto         |
+    | 10. Salir                    |
+    +------------------------------+
     """)
 
 def main():
