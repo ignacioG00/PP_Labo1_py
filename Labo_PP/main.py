@@ -1,9 +1,9 @@
 import csv
 import json
 from datetime import datetime
-from utils import validar_nombre, validar_descripcion, validar_presupuesto, validar_fecha, obtener_opcion
-from file_management import cargar_proyectos, guardar_proyectos, guardar_proyectos_finalizados
-from project_management import (
+from validaciones import validar_nombre, validar_descripcion, validar_presupuesto, validar_fecha, obtener_opcion
+from manejo_archivos import cargar_proyectos, guardar_proyectos, guardar_proyectos_finalizados
+from funciones import (
     ingresar_proyecto,
     modificar_proyecto,
     cancelar_proyecto,
@@ -33,6 +33,7 @@ def menu():
     """)
 
 def main():
+    
     proyectos = cargar_proyectos(PROYECTOS_CSV)
 
     while True:
