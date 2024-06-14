@@ -14,13 +14,13 @@ def cargar_proyectos(archivo_csv):
             for row in reader[1:]:
                 data= row.strip().split(',')
                 proyecto = {
-                    "ID" : (data[0]),
-                    'Nombre del Proyecto' : str(data[1]),
+                    "id" : int(data[0]),
+                    'Nombre del Proyecto' : (data[1]),
                     'Descripción' : (data[2]),
                     'Fecha de Inicio' : (data[3]),
                     'Fecha de Fin' : (data[4]),
                     'Presupuesto' : (data[5]),
-                    'Estado' : str(data[6])
+                    'Estado' : (data[6])
                 }
                 
                 proyectos.append(proyecto)
