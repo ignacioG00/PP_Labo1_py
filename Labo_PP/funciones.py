@@ -38,7 +38,7 @@ def ingresar_proyecto(proyectos):
 
     id_proyecto = len(proyectos) + 1
     proyecto = {
-        'ID': id_proyecto,
+        'id': id_proyecto,
         'Nombre del Proyecto': nombre,
         'Descripción': descripcion,
         'Fecha de Inicio': fecha_inicio,
@@ -61,7 +61,7 @@ def modificar_proyecto(proyectos):
         print("ID inválido. Debe ser un número entero.")
         id_proyecto = input("Ingrese el ID del proyecto a modificar: ")
         
-    proyecto = next((p for p in proyectos if p['ID'] == id_proyecto), None)
+    proyecto = next((p for p in proyectos if p['id'] == int(id_proyecto)), None)
     if not proyecto:
         print(f"No se encontró ningún proyecto con ID {id_proyecto}.")
         return
@@ -71,18 +71,13 @@ def modificar_proyecto(proyectos):
     +------------------------------+
     |        MENÚ PRINCIPAL        |
     +------------------------------+
-    |  1. Ingresar proyecto        |
-    |  2. Modificar proyecto       |
-    |  3. Cancelar proyecto        |
-    |  4. Comprobar proyectos      |
-    |  5. Mostrar todos            |
-    |  6. Calcular presupuesto     |
-    |     promedio                 |
-    |  7. Buscar proyecto por      |
-    |     nombre                   |
-    |  8. Ordenar proyectos        |
-    |  9. Retomar proyecto         |
-    | 10. Salir                    |
+    |  1. Nombre del Proyecto      |
+    |  2. Descripcion              |
+    |  3. Presupuesto              |
+    |  4. Fecha de Inicio          |
+    |  5. Fecha de Fin             |
+    |  6. Estado                   |
+    |  7. Salir                    |
     +------------------------------+
     """)
         opcion = obtener_opcion("Seleccione el campo a modificar: ", 1, 7)
@@ -137,7 +132,7 @@ def cancelar_proyecto(proyectos):
     while not id_proyecto.isdigit():
         print("ID inválido. Debe ser un número entero.")
         id_proyecto = input("Ingrese el ID del proyecto a cancelar: ")
-    proyecto = next((p for p in proyectos if p['ID'] == id_proyecto), None)
+    proyecto = next((p for p in proyectos if p['id'] == id_proyecto), None)
     if proyecto:
         proyecto['Estado'] = 'Cancelado'
         print(f"Proyecto con ID {id_proyecto} ha sido cancelado.")
@@ -162,16 +157,16 @@ def comprobar_proyectos(proyectos):
         try:
             fecha_fin = datetime.strptime(proyecto['Fecha de Fin'], formato_fecha)
         except ValueError:
-            print(f"Error: Formato de fecha inválido en el proyecto con ID {proyecto['ID']}")
+            print(f"Error: Formato de fecha inválido en el proyecto con ID {proyecto['id']}")
             continue
         
         # Comparar la fecha de finalización con la fecha actual
         if fecha_fin < fecha_actual and proyecto['Estado'] != 'Finalizado':
             proyecto['Estado'] = 'Finalizado'
-            print(f"El proyecto con ID {proyecto['ID']} ha sido finalizado.")
+            print(f"El proyecto con ID {proyecto['id']} ha sido finalizado.")
         elif fecha_fin >= fecha_actual and proyecto['Estado'] == 'Finalizado':
             proyecto['Estado'] = 'Activo'
-            print(f"El proyecto con ID {proyecto['ID']} ha sido reactivado a Activo.")
+            print(f"El proyecto con ID {proyecto['id']} ha sido reactivado a Activo.")
     print("Comprobación de proyectos completada.")
 
 def mostrar_todos(proyectos):
@@ -180,10 +175,10 @@ def mostrar_todos(proyectos):
 
     :param proyectos: Lista de proyectos.
     """
-    print(f"| {'Nombre del Proyecto':38} | {'Descripción':80} | {'Fecha de Inicio':12} | {'Fecha de Fin':12} | {'Presupuesto':12} | {'Estado':10} |")
+    print(f"| {'(ID) Nombre del Proyecto':38} | {'Descripción':80} | {'Fecha de Inicio':12} | {'Fecha de Fin':12} | {'Presupuesto':12} | {'Estado':10} |")
     print('-' * 150)
     for proyecto in proyectos:
-        print(f"| {proyecto['Nombre del Proyecto']:38} | {proyecto['Descripción']:80} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Presupuesto']:12} | {proyecto['Estado']:10} |")
+            print(f"| {proyecto['id']} {proyecto['Nombre del Proyecto']:38} | {proyecto['Descripción']:80} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Presupuesto']:12} | {proyecto['Estado']:10} |")
 
 def calcular_presupuesto_promedio(proyectos):
     """
@@ -255,7 +250,7 @@ def retomar_proyecto(proyectos):
     while not id_proyecto.isdigit():
         print("ID inválido. Debe ser un número entero.")
         id_proyecto = input("Ingrese el ID del proyecto a retomar: ")
-    proyecto = next((p for p in proyectos if p['ID'] == id_proyecto), None)
+    proyecto = next((p for p in proyectos if p['id'] == id_proyecto), None)
     if proyecto and proyecto['Estado'] == 'Cancelado':
         proyecto['Estado'] = 'Activo'
         print(f"Proyecto con ID {id_proyecto} ha sido retomado.")
@@ -273,7 +268,7 @@ def mostrar_discriminado(proyectos, opcion):
     print('-' * 150)
     for proyecto in proyectos:
         if proyecto['Estado'] == opcion:
-            print(f"|{proyecto['ID']} {proyecto['Nombre del Proyecto']:38} | {proyecto['Descripción']:80} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Presupuesto']:12} | {proyecto['Estado']:10} |")
+            print(f"|{proyecto['id']} {proyecto['Nombre del Proyecto']:38} | {proyecto['Descripción']:80} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Presupuesto']:12} | {proyecto['Estado']:10} |")
 
 def ordenar_por(proyectos, ascendente, seccion):
     """
