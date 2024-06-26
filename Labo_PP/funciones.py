@@ -301,10 +301,37 @@ def ordenar_por_FechaInicio(proyectos,ascendente):
     n = len(proyectos)
     for i in range(n):
         for j in range(0, n-i-1):
-            fecha_j = datetime.strptime(proyectos[j]['Fecha de Inicio'], '%d-%m-%Y')
-            fecha_j1 = datetime.strptime(proyectos[j+1]['Fecha de Inicio'], '%d-%m-%Y')
+            fecha_j = datetime.strptime(proyectos[j]['Fecha de Inicio'].strip(), '%d-%m-%Y')
+            fecha_j1 = datetime.strptime(proyectos[j+1]['Fecha de Inicio'].strip(), '%d-%m-%Y')
             if (ascendente and fecha_j > fecha_j1) or (not ascendente and fecha_j < fecha_j1):
                 # Intercambiar si la fecha actual es mayor (ascendente) o menor (descendente) que la siguiente fecha
                 proyectos[j], proyectos[j+1] = proyectos[j+1], proyectos[j]
     return proyectos
+
+def proyecto_seccion_en_10s(proyecto, opcion):
+    fecha_ini_decada = datetime.strptime('01-01-2010', '%d-%m-%Y')
+    fecha_fin_decada = datetime.strptime('31-12-2019', '%d-%m-%Y')
+    #Me tiraba error unconverted remain, lo que significaba que habian espacios de mas por lo que agrego la funcion.strip() 
+    # que quita todos los espacios en blancos que hay en el csv al traerlos
+    fecha_inicio = datetime.strptime(proyecto['Fecha de Inicio'].strip(), '%d-%m-%Y')
+    return fecha_ini_decada <= fecha_inicio <= fecha_fin_decada and proyecto['Estado'] == opcion
+
+def mostrar_finalizados_o_Iniciados_en_10(proyectos):
+    """
+    Muestra todos los proyectos en formato de tabla.
+
+    :param proyectos: Lista de proyectos.
+    """
+    opcion = obtener_opcion("Seleccione los proyectos a mostrar: \n 1.Finalizados en los 10's \n 2.Iniciados en los 10's\n\n" ,1 ,2)
+    if opcion == 1:
+        nombre = 'Finalizado'
+    elif opcion == 2:
+        nombre = 'Activo'
+            
+    print("Proyectos finalizados en la década de los 10s:")
+    print(f"| {'Nombre del Proyecto':38} | {'Descripción':80} | {'Fecha de Inicio':12} | {'Fecha de Fin':12} | {'Presupuesto':12} | {'Estado':10} |")
+    print('-' * 150)
+    for proyecto in proyectos:
+        if proyecto_seccion_en_10s(proyecto,nombre):
+            print(f"| {proyecto['Nombre del Proyecto']:38} | {proyecto['Descripción']:80} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Presupuesto']:12} | {proyecto['Estado']:10} |")
         
