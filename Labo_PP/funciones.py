@@ -147,19 +147,19 @@ def comprobar_proyectos(proyectos):
     """
      # Obtener la fecha actual
     fecha_actual = datetime.now()
-    
+    fecha_actual_str = fecha_actual.strftime('%d-%m-%Y')
+    fecha_actual = datetime.strptime(fecha_actual_str, '%d-%m-%Y')
     # Formato de fecha esperado
-    formato_fecha = "%d-%m-%Y"
-    
+
     # Iterar sobre cada proyecto
     for proyecto in proyectos:
         # Convertir la fecha de finalización del proyecto a un objeto datetime
         try:
-            fecha_fin = datetime.strptime(proyecto['Fecha de Fin'], formato_fecha)
+            fecha_fin = datetime.strptime(proyecto['Fecha de Fin'], '%d-%m-%Y')
         except ValueError:
             print(f"Error: Formato de fecha inválido en el proyecto con ID {proyecto['id']}")
             continue
-        
+
         # Comparar la fecha de finalización con la fecha actual
         if fecha_fin < fecha_actual and proyecto['Estado'] != 'Finalizado':
             proyecto['Estado'] = 'Finalizado'
@@ -203,9 +203,11 @@ def buscar_proyecto_por_nombre(proyectos):
     """
     nombre = input("Ingrese el nombre del proyecto a buscar: ")
     for proyecto in proyectos:
-        if proyecto['Nombre del Proyecto'].lower() == nombre.lower():
+        nombreProyecto = proyecto.get('Nombre del Proyecto', '').strip().lower()
+        if nombreProyecto == nombre.strip().lower():
             print(f"| {proyecto['Nombre del Proyecto']:30} | {proyecto['Descripción']:50} | {proyecto['Presupuesto']:12} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Estado']:10} |")
             return
+        
     print(f"No se encontró ningún proyecto con el nombre '{nombre}'.")
 
 def ordenar_proyectos(proyectos):
