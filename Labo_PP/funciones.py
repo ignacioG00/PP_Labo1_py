@@ -132,7 +132,7 @@ def cancelar_proyecto(proyectos):
     while not id_proyecto.isdigit():
         print("ID inválido. Debe ser un número entero.")
         id_proyecto = input("Ingrese el ID del proyecto a cancelar: ")
-    proyecto = next((p for p in proyectos if p['id'] == id_proyecto), None)
+    proyecto = next((p for p in proyectos if p['id'] == int(id_proyecto)), None)
     if proyecto:
         proyecto['Estado'] = 'Cancelado'
         print(f"Proyecto con ID {id_proyecto} ha sido cancelado.")
@@ -147,19 +147,19 @@ def comprobar_proyectos(proyectos):
     """
      # Obtener la fecha actual
     fecha_actual = datetime.now()
-    fecha_actual_str = fecha_actual.strftime('%d-%m-%Y')
-    fecha_actual = datetime.strptime(fecha_actual_str, '%d-%m-%Y')
+    
     # Formato de fecha esperado
-
+    formato_fecha ="%d-%m-%Y"
+    
     # Iterar sobre cada proyecto
     for proyecto in proyectos:
         # Convertir la fecha de finalización del proyecto a un objeto datetime
         try:
-            fecha_fin = datetime.strptime(proyecto['Fecha de Fin'], '%d-%m-%Y')
+            fecha_fin = datetime.strptime(proyecto['Fecha de Fin'].strip(), formato_fecha)
         except ValueError:
             print(f"Error: Formato de fecha inválido en el proyecto con ID {proyecto['id']}")
             continue
-
+        
         # Comparar la fecha de finalización con la fecha actual
         if fecha_fin < fecha_actual and proyecto['Estado'] != 'Finalizado':
             proyecto['Estado'] = 'Finalizado'
@@ -203,11 +203,9 @@ def buscar_proyecto_por_nombre(proyectos):
     """
     nombre = input("Ingrese el nombre del proyecto a buscar: ")
     for proyecto in proyectos:
-        nombreProyecto = proyecto.get('Nombre del Proyecto', '').strip().lower()
-        if nombreProyecto == nombre.strip().lower():
+        if proyecto['Nombre del Proyecto'].lower() == nombre.lower():
             print(f"| {proyecto['Nombre del Proyecto']:30} | {proyecto['Descripción']:50} | {proyecto['Presupuesto']:12} | {proyecto['Fecha de Inicio']:12} | {proyecto['Fecha de Fin']:12} | {proyecto['Estado']:10} |")
             return
-        
     print(f"No se encontró ningún proyecto con el nombre '{nombre}'.")
 
 def ordenar_proyectos(proyectos):
@@ -252,7 +250,7 @@ def retomar_proyecto(proyectos):
     while not id_proyecto.isdigit():
         print("ID inválido. Debe ser un número entero.")
         id_proyecto = input("Ingrese el ID del proyecto a retomar: ")
-    proyecto = next((p for p in proyectos if p['id'] == id_proyecto), None)
+    proyecto = next((p for p in proyectos if p['id'] == int(id_proyecto)), None)
     if proyecto and proyecto['Estado'] == 'Cancelado':
         proyecto['Estado'] = 'Activo'
         print(f"Proyecto con ID {id_proyecto} ha sido retomado.")
@@ -283,10 +281,15 @@ def ordenar_por(proyectos, ascendente, seccion):
     n = len(proyectos)
     for i in range(n):
         for j in range(0, n-i-1):
-            if (ascendente and proyectos[j][seccion] > proyectos[j+1][seccion]) or \
-            (not ascendente and proyectos[j][seccion] < proyectos[j+1][seccion]):
+            if seccion == 'Nombre del Proyecto':
+                if (ascendente and proyectos[j][seccion].lower() > proyectos[j+1][seccion].lower()) or \
+                (not ascendente and proyectos[j][seccion].lower() < proyectos[j+1][seccion].lower()):
                 # Intercambiar si el elemento encontrado es mayor (ascendente) o menor (descendente) que el siguiente elemento
-                proyectos[j], proyectos[j+1] = proyectos[j+1], proyectos[j]
+                    proyectos[j], proyectos[j+1] = proyectos[j+1], proyectos[j]
+            elif (ascendente and proyectos[j][seccion] > proyectos[j+1][seccion]) or \
+                (not ascendente and proyectos[j][seccion] < proyectos[j+1][seccion]):
+                # Intercambiar si el elemento encontrado es mayor (ascendente) o menor (descendente) que el siguiente elemento
+                    proyectos[j], proyectos[j+1] = proyectos[j+1], proyectos[j]
 
 def ordenar_por_FechaInicio(proyectos,ascendente):
     """
